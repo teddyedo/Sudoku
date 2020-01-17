@@ -20,9 +20,15 @@ public class SudokuSolver {
     public static int row = 9;
     public static int col = 9;
     public static int[][] sudoku = new int[row][col];
+    
+    
 
     public static void main(String[] args) {
         
+        
+        solver s = new solver();
+
+
         //intialize an empty table
         for (int i = 0; i < row; i ++){
             for (int j = 0; j < col; j ++){
@@ -34,53 +40,73 @@ public class SudokuSolver {
         
         //develop an input method to allow user to insert his sudoku
         
-        System.out.println("Quanti numeri ci sono già inseriti nel sudoku che vuoi risolvere? ");
+        System.out.println("Quanti numeri ci sono già inseriti nel sudoku che "
+                + "vuoi risolvere? ");
         
         Scanner input = new Scanner(System.in);
         int n = input.nextInt();
         
+        System.out.println("Inserisci i numeri presenti nello schema che vuoi "
+                + "risolvere secondo il seguente schema: RCN, dove: \n"
+                + "R -> Riga \n"
+                + "C -> Colonna \n"
+                + "N -> Numero \n"
+                + "Ad esempio 846 significa alla riga 8, colonna 4, metti il 6"
+                + "\n"
+                + "N.B. Se ci si accorge di aver sbagliato l'inserimento di un"
+                + "numero, inserire il codice 999, premere invio e proseguire"
+                + "con l'inserimento dei numeri");
         
-        //sudoku manually filled for tests
+        for (int i = 0; i < n; i ++){
+            
+            
+            System.out.print("Inserisci il " + (i + 1) + "° numero: ");
+            
+            int numeroInput = input.nextInt();
+
+            
+            int riga = numeroInput / 100;
+            System.out.print(riga);
+            int colonna = (numeroInput - (riga * 100)) /10;
+            int numeroDaInserire = numeroInput - (riga * 100) - (colonna * 10);
+            
+            
+            if(riga < 1 || riga > 10){
+                System.out.println("La riga inserita non è valida!");
+                i --;
+            }
+
+            else if(colonna < 1 || colonna > 10){
+                System.out.println("La colonna inserita non è valida!");
+                i --;
+            }
+                
+            else if(numeroDaInserire < 1 || numeroDaInserire > 10){
+                System.out.println("Il numero inserito non è valido!");
+                i --;
+            }
+            
+            else if(numeroInput == 999){
+                i --;
+            }
+            
+            else{
+                sudoku[riga - 1][colonna - 1] = numeroDaInserire;
+                
+                System.out.println("\n");
+                s.printSudoku(sudoku);
+                System.out.println("\n");
+                
+            }
+  
+        }
         
-        sudoku[0][1] = 3;
-        sudoku[0][4] = 7;
-        sudoku[0][5] = 6;
-        sudoku[0][7] = 5;
-        sudoku[1][1] = 6;
-        sudoku[1][5] = 3;
-        sudoku[1][6] = 2;
-        sudoku[1][8] = 4;
-        sudoku[2][0] = 5;
-        sudoku[2][3] = 4;
-        sudoku[2][6] = 6;
-        sudoku[3][0] = 2;
-        sudoku[3][4] = 6;
-        sudoku[3][6] = 4;
-        sudoku[4][1] = 7;
-        sudoku[4][2] = 3;
-        sudoku[4][3] = 5;
-        sudoku[4][8] = 9;
-        sudoku[5][2] = 6;
-        sudoku[5][5] = 4;
-        sudoku[6][0] = 3;
-        sudoku[6][2] = 8;
-        sudoku[6][5] = 1;
-        sudoku[6][7] = 7;
-        sudoku[7][0] = 6;
-        sudoku[7][2] = 1;
-        sudoku[7][3] = 7;
-        sudoku[8][3] = 3;
-        sudoku[8][4] = 4;
-        sudoku[8][6] = 9;
-        
-        
-        solver s = new solver();
-        
+        System.out.println("La soluzione è: ");
+
         s.solve(sudoku);
         
         s.printSudoku(sudoku);
-        
-                
+         
     }
     
 }
